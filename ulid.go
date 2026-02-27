@@ -117,7 +117,7 @@ func EncodeRandom(length int, rng PRNG) (string, error) {
 
 func EncodeTime(unix int64) (string, error) {
 	if unix > TIME_MAX {
-		m := fmt.Sprintf("Cannot encode a time larger than %v: %v", TIME_MAX, unix)
+		m := fmt.Sprintf("Cannot encode a time larger than %d: %d", TIME_MAX, unix)
 		return "", blame.O0(ErrEncodeTimeSizeExceeded).WithAdditionalContext(m)
 	}
 	if unix < 0 {
