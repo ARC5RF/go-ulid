@@ -18,6 +18,11 @@ type factory_impl struct {
 	rng       PRNG
 }
 
+type Factory interface {
+	NextSeeded(seed int64) (ULID, error)
+	Next() (ULID, error)
+}
+
 func (impl *factory_impl) NextSeeded(seed int64) (ULID, error) {
 	impl.guard.Lock()
 	defer impl.guard.Unlock()
@@ -51,7 +56,7 @@ func (impl *factory_impl) Next() (ULID, error) {
 	return blame.O1(impl.NextSeeded(time.Now().Unix()))
 }
 
-func NewFactory(maybe_rng_override ...PRNG) *factory_impl {
+func NewFactory(maybe_rng_override ...PRNG) Factory {
 	// start_seed := time.Now().Unix()
 	rng := rand_int_64
 	for _, override := range maybe_rng_override {
